@@ -1,0 +1,38 @@
+{{ define "title" }}
+	guestbook
+{{ end }}
+
+{{ define "content" }}
+
+  <h3>guestbook</h3>
+
+	<ul class="guests">
+  	{{ range . }}
+			<li>
+				<blockquote>{{ .Message }}</blockquote>
+				<p>
+					- <cite>{{ .Name }}</cite>, <time>{{ .Timestamp }}</time>
+				</p>
+			</li>
+    {{ end }}
+	</ul>
+
+  <hr>
+
+  <form action="/sign" method="POST">
+
+    <p>Name:<br>
+			<input type="text" name="name">
+		</p>
+
+		<p>Message:<br>
+			<textarea name="message" rows="10" cols="40"></textarea>
+		</p>
+
+		<p>
+			<button>Sign</button>
+		</p>
+
+  </form>
+
+{{ end }}
