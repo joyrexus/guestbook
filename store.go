@@ -86,12 +86,12 @@ func Entries() ([]*Entry, error) {
     err := db.View(func(tx *bolt.Tx) error {
         c := tx.Bucket([]byte("entries")).Cursor()
         for k, v := c.First(); k != nil; k, v = c.Next() {
+            // fmt.Printf("key=%s, value=%s\n", k, v)
             dec, err := decode(v)
             if err != nil {
                 return fmt.Errorf("problem decoding %s: %s", k, err)
             }
             entries = append(entries, dec)
-            // fmt.Printf("key=%s, value=%s\n", k, v)
         }
         return nil
     })
@@ -102,7 +102,7 @@ func Entries() ([]*Entry, error) {
 func main() {
     import "log"
 
-    _, err := OpenDB("./data.db")
+    _, err := OpenDB("data.db")
     if err != nil {
         log.Fatal(err)
     }

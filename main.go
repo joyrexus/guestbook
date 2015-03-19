@@ -1,9 +1,12 @@
 package main
 
-import "net/http"
+import (
+    "log"
+    "net/http"
+)
 
 func main() {
-    OpenDB("./data.db")
+    OpenDB("data.db")
     defer CloseDB()
 
     http.HandleFunc("/book", book)
