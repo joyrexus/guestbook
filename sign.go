@@ -1,39 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"time"
-	"net/http"
+    "fmt"
+    "time"
+    "net/http"
 )
 
-type Entry struct {
-	Timestamp time.Time
-	Name      string
-	Message   string
-}
-
+// sign handles the POST requests coming from the guestbook (`/book`)
+// when someone "signs" it, i.e., fills out the guestbook form and
+// submits a new entry.  We persist the new entry and redirect 
+// back to the guestbook.
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	// only except POST requests
-	if r.Method != "POST" {
-		http.NotFound(w, r)
-		return
-	}
+    // only accept POST requests
+    if r.Method != "POST" {
+        http.NotFound(w, r)
+        return
+    }
 
-	entry := &Entry{
-		Timestamp: 	time.Now(),
-		Name:		r.FormValue("name"),
-		Message:	r.FormValue("message"),
-	}
+    entry := &Entry{
+        Timestamp:  time.Now(),
+        Name:       r.FormValue("name"),
+        Message:    r.FormValue("message"),
+    }
 
-	fmt.Println(entry)	
-	/* 
-	// insert entry into db
-	if err := db.Insert(entry); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	*/
+    fmt.Printf("Saving entry for %s\n", entry.Name)
+    if err := entry.save(); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+    http.Redirect(w, r, "/book", http.StatusTemporaryRedirect)
 }
