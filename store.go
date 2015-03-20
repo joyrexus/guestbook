@@ -54,7 +54,7 @@ func (e *Entry) save() error {
         }
         ts, err := e.Timestamp.MarshalBinary()
         if err != nil {
-            return fmt.Errorf("problem converting timestamp to bytes %s: %v", 
+            return fmt.Errorf("problem converting timestamp `%s` to bytes: %v", 
                 e.Timestamp, 
                 err)
         }
